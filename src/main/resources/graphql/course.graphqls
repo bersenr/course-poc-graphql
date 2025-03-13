@@ -1,0 +1,19 @@
+type Query {
+	findCourse (id:ID!) : Course!
+	courses : [Course!]!
+}
+
+type Mutation {
+	addCourse (name:String!, description:String!) : Course!
+}
+
+type Course @key(fields:"id") {
+	id:ID!
+	name:String!
+	description:String!
+}
+
+type Student @key(fields:"id") @extends{
+	id:ID! @external
+	courseList:[Course!]!
+}

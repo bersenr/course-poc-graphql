@@ -1,0 +1,7 @@
+query FindStudent($id: ID!) {
+  findStudent(id: $id) {
+    id
+    name
+    courseIds
+  }
+}

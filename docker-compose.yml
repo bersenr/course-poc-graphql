@@ -1,0 +1,27 @@
+services:
+  course-service:
+    container_name: course-service
+    image: course-service:1.0.0
+    build: .
+    ports:
+      - "8082:8082"
+    networks:
+      - dapr-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://course-service:8082/health"]
+      interval: 10s
+      retries: 3
+      start_period: 5s
+      timeout: 3s
+
+  dapr-course:
+    container_name: dapr-course
+    image: "daprio/daprd:latest"
+    command: ["./daprd", "--app-id", "course-service", "--app-port", "8082"]
+    depends_on:
+      - course-service
+    network_mode: "service:course-service"
+
+networks:
+  dapr-network:
+    name: dapr-network
